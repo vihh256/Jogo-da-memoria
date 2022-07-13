@@ -1,21 +1,21 @@
 const cards = document.querySelectorAll('.card')
 
 let hasFlippedCard = false;
-let lockBoard = false; //funcao que corrige o bug
-let firstCard, secondCard;
-let movements = 0;
+let lockBoard = false //funcao que corrige o bug
+let firstCard, secondCard
 
+/* Funçao para virar a carta */
 function flipCard(){
     if(lockBoard) return;
     if(this === firstCard) return;
 
-    this.classList.add('flip')
+    this.classList.toggle('flip')
     
     if(!hasFlippedCard) {
         //primeiro click
         hasFlippedCard = true;
         firstCard = this;
-        
+
         return;
     }
         //segundo click
@@ -24,13 +24,25 @@ function flipCard(){
         correspondencia();
     }
 
+/* Funçao para ver se as cartas correspondem */
 function correspondencia(){
     let match = firstCard.dataset.framework === secondCard.dataset.framework
-
+/* 
+Expressao regular */
     match ? desabilitarCards() : cardNaoVirados();
-
+    
+/* comparando as cartas
+if() {
+    //cartas iguais
+        desabilitarCards();
+    }
+       else{
+    //cartas diferentes
+        cardNaoVirados();
+            } */
 }
 
+/* Funçao que desabilita as cartas depois de viradas */
 function desabilitarCards() {
     firstCard.removeEventListener('click', flipCard);
     secondCard.removeEventListener('click', flipCard);
@@ -38,9 +50,9 @@ function desabilitarCards() {
     resetBoard();
     }
 
-function cardNaoVirados() {
 
-  
+    /* Funçao que desvira a carta depois de clicar e dar errado */
+function cardNaoVirados() {
     lockBoard = true;
 
     setTimeout(() => {
@@ -58,6 +70,8 @@ function resetBoard(){
     [firstCard, secondCard] = [null, null]
 }
 
+
+/*     Funçao que embaralha as cartas */
 (function shuffle() {
     cards.forEach(card => {
         let randomPos = Math.floor(Math.random() * 12);
